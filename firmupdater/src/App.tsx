@@ -68,8 +68,8 @@ export default function App() {
   const portRef = useRef<SerialPort | null>(null);
   const keepReadingRef = useRef<boolean>(false);
 
-  const REPO_OWNER = "Xander2662";
-  const REPO_NAME = "VirtualSensors_project";
+  const REPO_OWNER = "sgtkingo";
+  const REPO_NAME = "SignalTwinProject";
   const BAUD_RATE = 115200;
 
   // --- 1. Automatická kontrola updatů po startu ---
@@ -120,6 +120,7 @@ export default function App() {
         addLog(
           `Nalezen firmware: ${binAsset.name} (${(binAsset.size / 1024).toFixed(2)} KB)`
         );
+        addLog(`Firmware URL: ${binAsset.browser_download_url}`);
         await downloadFirmware(binAsset.browser_download_url);
       } else {
         addLog("Varování: Release neobsahuje .bin soubor.");
