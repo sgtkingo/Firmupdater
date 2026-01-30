@@ -51,7 +51,7 @@ export default function App() {
   const [progress, setProgress] = useState<number>(0);
   const [logs, setLogs] = useState<string>("");
   const [latestRelease, setLatestRelease] = useState<GithubRelease | null>(null);
-  // 1) State (nahoru k ostatním useState)
+  
   const [portSelected, setPortSelected] = useState<boolean>(false);
   const [isFlashing, setIsFlashing] = useState<boolean>(false);
   const [firmwareBin, setFirmwareBin] = useState<ArrayBuffer | null>(null);
@@ -67,6 +67,9 @@ export default function App() {
   const readerRef = useRef<ReadableStreamDefaultReader | null>(null);
   const portRef = useRef<SerialPort | null>(null);
   const keepReadingRef = useRef<boolean>(false);
+  
+  // Ref pro zabránění dvojímu spuštění v React Strict Mode
+  const initialized = useRef(false);
 
   const REPO_OWNER = "sgtkingo";
   const REPO_NAME = "SignalTwinProject";
@@ -74,7 +77,11 @@ export default function App() {
 
   // --- 1. Automatická kontrola updatů po startu ---
   useEffect(() => {
-    checkUpdates();
+    // Zámek proti dvojímu spuštění (React Strict Mode fix)
+    if (!initialized.current) {
+      initialized.current = true;
+      checkUpdates();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -115,7 +122,7 @@ export default function App() {
       setLatestRelease(data);
       addLog(`Nalezena verze: ${data.tag_name}`);
 
-      const binAsset = data.assets.find((asset) => asset.name.endsWith(".bin"));
+      const binAsset = data.assets.find((asset) => asset.name.endsWith("ino.bin"));
       if (binAsset) {
         addLog(
           `Nalezen firmware: ${binAsset.name} (${(binAsset.size / 1024).toFixed(2)} KB)`
@@ -138,12 +145,18 @@ export default function App() {
 
   const downloadFirmware = async (url: string) => {
     setStatus("Stahuji firmware...");
-    const finalUrl = useProxy ? `https://corsproxy.io/?${encodeURIComponent(url)}` : url;
-    addLog("Stahuji .bin soubor...");
+    
+    // ZMĚNA: Návrat k corsproxy.io, protože ghproxy.net vracel "Failed to fetch" (CORS/Network error).
+    // Problém 403 u corsproxy byl pravděpodobně způsoben dvojím voláním (fixed výše).
+    const finalUrl = useProxy 
+      ? `https://corsproxy.io/?${encodeURIComponent(url)}` 
+      : url;
+    
+    addLog(`Stahuji .bin soubor... ${useProxy ? "(přes Proxy)" : ""}`);
 
     try {
       const response = await fetch(finalUrl);
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      if (!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}`);
       const arrayBuffer = await response.arrayBuffer();
       if (arrayBuffer.byteLength === 0) throw new Error("Prázdný soubor.");
 
