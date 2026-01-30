@@ -1,8 +1,11 @@
 # ⚡ Web-based Firmware Updater
 
-Web-based tool to flash ESP32 firmware for `VirtualSensors_project` via the Web Serial API. No external tools needed.
+Web-based tool to flash ESP32 firmware for `SignalTwin` (https://github.com/sgtkingo/SignalTwinProject) via the Web Serial API. No external tools needed.
 
 ---
+
+## 🌐 Live-page
+Checkout https://sgtkingo.github.io/Firmupdater/
 
 ## ✨ Features
 
