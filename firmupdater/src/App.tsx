@@ -31,6 +31,7 @@ interface SerialPort {
 }
 
 interface GithubAsset {
+  id: number; 
   name: string;
   browser_download_url: string;
   size: number;
@@ -128,7 +129,7 @@ export default function App() {
           `Nalezen firmware: ${binAsset.name} (${(binAsset.size / 1024).toFixed(2)} KB)`
         );
         addLog(`Firmware URL: ${binAsset.browser_download_url}`);
-        await downloadFirmware(binAsset.browser_download_url);
+        await downloadFirmware(binAsset);
       } else {
         addLog("Varování: Release neobsahuje .bin soubor.");
         setStatus("Binárka nenalezena");
@@ -143,21 +144,20 @@ export default function App() {
     }
   };
 
-  const downloadFirmware = async (url: string) => {
+  const downloadFirmware = async (asset: GithubAsset) => {
     setStatus("Stahuji firmware...");
-    
-    // ZMĚNA: Návrat k corsproxy.io, protože ghproxy.net vracel "Failed to fetch" (CORS/Network error).
-    // Problém 403 u corsproxy byl pravděpodobně způsoben dvojím voláním (fixed výše).
-    const finalUrl = useProxy 
-      ? `https://proxy.corsfix.com/?${url}` 
-      : url;
-    
-    addLog(`Stahuji .bin soubor... ${useProxy ? "(přes Proxy)" : ""}`);
-    addLog(`>>> Downloading from: ${finalUrl}`);
+    addLog("Stahuji .bin soubor...");
+
+    // GitHub Releases Asset API download (works on GitHub Pages, no CORS proxy)
+    const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/assets/${asset.id}`;
 
     try {
-      const response = await fetch(finalUrl);
+      const response = await fetch(apiUrl, {
+        headers: { Accept: "application/octet-stream" },
+      });
+
       if (!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}`);
+
       const arrayBuffer = await response.arrayBuffer();
       if (arrayBuffer.byteLength === 0) throw new Error("Prázdný soubor.");
 
