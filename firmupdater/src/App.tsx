@@ -58,7 +58,7 @@ export default function App() {
   const [portSelected, setPortSelected] = useState<boolean>(false);
   const [isFlashing, setIsFlashing] = useState<boolean>(false);
   const [firmwareBin, setFirmwareBin] = useState<ArrayBuffer | null>(null);
-  const [useProxy, setUseProxy] = useState<boolean>(true);
+  const [useProxy, setUseProxy] = useState<boolean>(false);
 
   // State pro nápovědu
   const [showHelp, setShowHelp] = useState<boolean>(false);
@@ -596,6 +596,14 @@ export default function App() {
                   Firmwaru
                 </h2>
                 <div className="flex items-center gap-2">
+                  <button
+                    onClick={checkUpdates}
+                    disabled={loadingUpdate}
+                    className="text-xs text-slate-400 hover:text-white flex items-center gap-1 bg-slate-700/50 px-2 py-1 rounded border border-slate-600 hover:bg-slate-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    title="Znovu kontrolovat aktualizace"
+                  >
+                    <RefreshCw size={12} className={loadingUpdate ? "animate-spin" : ""} /> Obnovit
+                  </button>
                   {latestRelease && (
                     <a
                       href={latestRelease.html_url}
