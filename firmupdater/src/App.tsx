@@ -53,6 +53,7 @@ export default function App() {
   const [progress, setProgress] = useState<number>(0);
   const [logs, setLogs] = useState<string>("");
   const [latestRelease, setLatestRelease] = useState<GithubRelease | null>(null);
+  const [appVersion, setAppVersion] = useState<string>("...");
   
   const [portSelected, setPortSelected] = useState<boolean>(false);
   const [isFlashing, setIsFlashing] = useState<boolean>(false);
@@ -83,14 +84,10 @@ export default function App() {
     if (!initialized.current) {
       initialized.current = true;
       checkUpdates();
+      loadAppVersion();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // Effect: Auto-scroll terminal
-  useEffect(() => {
-    terminalEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [logs]);
 
   const addLog = (msg: string) => {
     setLogs((prev) => prev + `[${new Date().toLocaleTimeString()}] ${msg}\n`);
@@ -98,6 +95,19 @@ export default function App() {
     console.log(`[AppLog] ${msg}`);
   };
 
+  const loadAppVersion = async () => {
+    try {
+      const response = await fetch("/Firmupdater/VERSION");
+      if (response.ok) {
+        const version = await response.text();
+        setAppVersion(version.trim());
+      }
+    } catch (error) {
+      console.error("Failed to load app version:", error);
+      setAppVersion("dev");
+    }
+  };
+ 
   const openHelp = (section: string) => {
     setActiveHelpSection(section);
     setShowHelp(true);
@@ -739,6 +749,13 @@ export default function App() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Footer with version */}
+      <div className="max-w-4xl mx-auto mt-8 pt-4 border-t border-slate-700/50 text-center text-xs text-slate-500">
+        <p>
+          v{appVersion} | SignalTwin Project © {new Date().getFullYear()}
+        </p>
       </div>
     </div>
   );
