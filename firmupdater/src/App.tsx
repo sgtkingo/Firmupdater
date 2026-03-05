@@ -122,7 +122,7 @@ export default function App() {
       setLatestRelease(data);
       addLog(`Nalezena verze: ${data.tag_name}`);
 
-      const binAsset = data.assets.find((asset) => asset.name.endsWith("ino.bin"));
+      const binAsset = data.assets.find((asset) => asset.name.endsWith(".ino.merged.bin"));
       if (binAsset) {
         addLog(
           `Nalezen firmware: ${binAsset.name} (${(binAsset.size / 1024).toFixed(2)} KB)`
@@ -288,8 +288,8 @@ export default function App() {
           : null;
 
       const fileArray = fwBstr
-        ? [{ data: fwBstr, address: 0x10000 }]
-        : [{ data: fwU8, address: 0x10000 }];
+        ? [{ data: fwBstr, address: 0x0 }]
+        : [{ data: fwU8, address: 0x0 }];
 
       await (loader as any).writeFlash({
         fileArray,
@@ -563,8 +563,8 @@ export default function App() {
           <div className="flex items-center space-x-3">
             <Cpu className="w-8 h-8 text-blue-400" />
             <div>
-              <h1 className="text-2xl font-bold text-white">ESP32 Firmware Updater</h1>
-              <p className="text-sm text-slate-400">VirtualSensors Project</p>
+              <h1 className="text-2xl font-bold text-white">Firmware Updater for EbuBoxPanel</h1>
+              <p className="text-sm text-slate-400">SignalTwin Project</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -648,7 +648,7 @@ export default function App() {
                 <Zap size={20} /> 2. Připojení
               </h2>
               <div className="text-sm text-slate-400 mb-4 space-y-2">
-                <p>Připojte ESP32 k počítači USB kabelem.</p>
+                <p>Připojte zařízení (EbuBoxPanel) k počítači USB kabelem.</p>
                 <p className="text-slate-500 text-xs flex items-center gap-1">
                   <Cable size={12} /> Ujistěte se, že kabel přenáší data (nejen nabíjení).
                 </p>
@@ -698,7 +698,7 @@ export default function App() {
                 <AlertTriangle size={16} className="shrink-0 mt-0.5" />
                 <div>
                   <strong>Tip:</strong> Pokud se nahrávání zasekne na "Connecting...", držte tlačítko
-                  <strong> BOOT</strong> na ESP32 v momentě kliknutí na tlačítko níže.
+                  <strong> BOOT</strong> na EbuBoxPanelu (ESP32) v momentě kliknutí na tlačítko níže.
                 </div>
               </div>
 
