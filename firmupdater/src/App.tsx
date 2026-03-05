@@ -31,7 +31,8 @@ interface SerialPort {
 }
 
 interface GithubAsset {
-  id: number; 
+  id: number;
+  url: string; 
   name: string;
   browser_download_url: string;
   size: number;
@@ -146,17 +147,14 @@ export default function App() {
 
   const downloadFirmware = async (asset: GithubAsset) => {
     setStatus("Stahuji firmware...");
-    addLog("Stahuji .bin soubor...");
-
-    // GitHub Releases Asset API download (works on GitHub Pages, no CORS proxy)
-    const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/assets/${asset.id}`;
-
+    //addLog("Stahuji .bin soubor...");
+    //addLog(`>>> Download asset: ${asset.name}, ${asset.id}, ${asset.url}, ${asset.browser_download_url}`);
+    //Temporary fix pro CORS problémy s GitHubem - místo API URL použijeme přímo raw URL, které by mělo fungovat bez CORS proxy
+    const FIRMWARE_RAW_URL = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/bin/latest/${asset.name}`;
+      
     try {
-      const response = await fetch(apiUrl, {
-        headers: { Accept: "application/octet-stream" },
-      });
-
-      if (!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}`);
+      const response = await fetch(FIRMWARE_RAW_URL, { cache: "no-store" });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
       const arrayBuffer = await response.arrayBuffer();
       if (arrayBuffer.byteLength === 0) throw new Error("Prázdný soubor.");
