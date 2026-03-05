@@ -149,10 +149,11 @@ export default function App() {
     // ZMĚNA: Návrat k corsproxy.io, protože ghproxy.net vracel "Failed to fetch" (CORS/Network error).
     // Problém 403 u corsproxy byl pravděpodobně způsoben dvojím voláním (fixed výše).
     const finalUrl = useProxy 
-      ? `https://corsproxy.io/?${encodeURIComponent(url)}` 
+      ? `https://proxy.corsfix.com/?${url}` 
       : url;
     
     addLog(`Stahuji .bin soubor... ${useProxy ? "(přes Proxy)" : ""}`);
+    addLog(`>>> Downloading from: ${finalUrl}`);
 
     try {
       const response = await fetch(finalUrl);
@@ -563,8 +564,8 @@ export default function App() {
           <div className="flex items-center space-x-3">
             <Cpu className="w-8 h-8 text-blue-400" />
             <div>
-              <h1 className="text-2xl font-bold text-white">Firmware Updater for EbuBoxPanel</h1>
-              <p className="text-sm text-slate-400">SignalTwin Project</p>
+              <h1 className="text-2xl font-bold text-white">Nástroj automatických aktualizací pro EbuBoxPanel</h1>
+              <p className="text-sm text-slate-400">SignalTwin Project <a href="https://github.com/sgtkingo/SignalTwinProject" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-300">GitHub</a></p>
             </div>
           </div>
           <div className="flex items-center gap-3">
