@@ -573,7 +573,7 @@ export default function App() {
             <Cpu className="w-8 h-8 text-blue-400" />
             <div>
               <h1 className="text-2xl font-bold text-white">Nástroj automatických aktualizací pro EbuBoxPanel</h1>
-              <p className="text-sm text-slate-400">SignalTwin Project <a href="https://github.com/sgtkingo/SignalTwinProject" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-300">GitHub</a></p>
+              <p className="text-sm text-slate-400">součást SignalTwin Project <a href="https://github.com/sgtkingo/SignalTwinProject" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-300">GitHub</a></p>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -754,7 +754,9 @@ export default function App() {
       {/* Footer with version */}
       <div className="max-w-4xl mx-auto mt-8 pt-4 border-t border-slate-700/50 text-center text-xs text-slate-500">
         <p>
-          v{appVersion} | SignalTwin Project © {new Date().getFullYear()}
+          v{appVersion} | Firmupdater Project © {new Date().getFullYear()} <a href="https://github.com/sgtkingo/Firmupdater" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">
+            Github
+          </a>
         </p>
       </div>
     </div>
