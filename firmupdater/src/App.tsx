@@ -572,7 +572,7 @@ export default function App() {
           <div className="flex items-center space-x-3">
             <Cpu className="w-8 h-8 text-blue-400" />
             <div>
-              <h1 className="text-2xl font-bold text-white">Nástroj automatických aktualizací pro EbuBoxPanel</h1>
+              <h1 className="text-2xl font-bold text-white">Nástroj automatických aktualizací pro EduBox HUB - Panel 📦</h1>
               <p className="text-sm text-slate-400">součást SignalTwin Project <a href="https://github.com/sgtkingo/SignalTwinProject" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-300">GitHub</a></p>
             </div>
           </div>
@@ -665,7 +665,7 @@ export default function App() {
                 <Zap size={20} /> 2. Připojení
               </h2>
               <div className="text-sm text-slate-400 mb-4 space-y-2">
-                <p>Připojte zařízení (EbuBoxPanel) k počítači USB kabelem.</p>
+                <p>Připojte zařízení (EduBox HUB - Panel) k počítači USB kabelem.</p>
                 <p className="text-slate-500 text-xs flex items-center gap-1">
                   <Cable size={12} /> Ujistěte se, že kabel přenáší data (nejen nabíjení).
                 </p>
@@ -715,7 +715,7 @@ export default function App() {
                 <AlertTriangle size={16} className="shrink-0 mt-0.5" />
                 <div>
                   <strong>Tip:</strong> Pokud se nahrávání zasekne na "Connecting...", držte tlačítko
-                  <strong> BOOT</strong> na EbuBoxPanelu (ESP32) v momentě kliknutí na tlačítko níže.
+                  <strong> BOOT</strong> na EduBox HUB - Panelu (ESP32) v momentě kliknutí na tlačítko níže.
                 </div>
               </div>
 
