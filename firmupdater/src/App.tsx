@@ -161,10 +161,12 @@ export default function App() {
     //addLog(`>>> Download asset: ${asset.name}, ${asset.id}, ${asset.url}, ${asset.browser_download_url}`);
     //Temporary fix pro CORS problémy s GitHubem - místo API URL použijeme přímo raw URL, které by mělo fungovat bez CORS proxy
     const FIRMWARE_RAW_URL = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/bin/latest/${asset.name}`;
+    addLog(`Stahuji firmware z: ${FIRMWARE_RAW_URL} (přes ${useProxy ? "CORS Proxy" : "přímo"})`);
       
     try {
       const response = await fetch(FIRMWARE_RAW_URL, { cache: "no-store" });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      addLog(`${response.status} ${response.statusText} - Stahování dokončeno, načítám data...`);
 
       const arrayBuffer = await response.arrayBuffer();
       if (arrayBuffer.byteLength === 0) throw new Error("Prázdný soubor.");
@@ -647,11 +649,12 @@ export default function App() {
                   <label className="text-xs text-slate-500 cursor-pointer flex items-center gap-1 mt-2">
                     <input
                       type="checkbox"
+                      disabled
                       checked={useProxy}
                       onChange={(e) => setUseProxy(e.target.checked)}
                       className="rounded bg-slate-700 border-slate-600"
                     />
-                    Použít CORS Proxy (doporučeno)
+                    Použít CORS Proxy (aktuálně nepodporováno)
                   </label>
                 </div>
               ) : (
