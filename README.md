@@ -51,7 +51,7 @@ Open `http://localhost:5173`.
 |---|---|
 | No Port | Install CP210x or CH340 drivers. |
 | Stuck “Connecting...” | Hold the **BOOT** button, click **"Update Firmware"**, release once flashing starts. |
-| Download Fail | Enable **"Use CORS Proxy"**. |
+| Download Fail | Enable **"Use CORS Proxy"**. (not supported in latest version) |
 
 ---
 
